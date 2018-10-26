@@ -34,7 +34,10 @@ struct list
 	void newRekordBack();
 	void newRekordIn();
 	void newRekord(string data);
-	void load();
+	void popLastRekord();			// usuwanie ostatniego rekordu
+	void popFirstRekord();			// usuwanie pierwszego rekordu
+	void popSelectedRekord();		// usuwanie wskazanego rekordu
+	void load();				// wczytanie listy z pliku .txt
 	void save();
 	int ile();
 
@@ -259,6 +262,18 @@ int list::ile()
     return licznik;
 }
 
+void list::popLastRekord() {								// usuwanie ostatniego rekordu
+
+}
+
+void list::popFirstRekord() {								// usuwanie pierwszego rekordu
+
+}
+
+void list::popSelectedRekord() {							// usuwanie wybranego rekordu
+
+}
+
 int main()
 {
 	list my_list;
@@ -304,17 +319,20 @@ int main()
 		}
 		else if (wybor == 52)   //4
 		{
-
+			my_list.popFirstRekord();
+			cout << "\n\n\t\t Usunieto pierwszy element :)\n\n";
 		}
 		else if (wybor == 53)   //5
 		{
-
+			my_list.popLastRekord();
+			cout << "\n\n\t\t Usunieto ostatni element :)\n\n";
 
 
         }
 		else if (wybor == 54)   //6
 		{
-
+			my_list.popSelectedRekord();
+			//cout << "\n\n\t\t Usunieto pierwszy element :)\n\n";
 
 		}
 		else if (wybor == 55)   //7
