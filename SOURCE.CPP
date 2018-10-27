@@ -30,13 +30,13 @@ struct list
 	list();
 	void display();
 	void displayBack();
-	void newRekordFront();
-	void newRekordBack();
-	void newRekordIn();
-	void newRekord(string data);
-	void popLastRekord();			// usuwanie ostatniego rekordu
-	void popFirstRekord();			// usuwanie pierwszego rekordu
-	void popSelectedRekord();		// usuwanie wskazanego rekordu
+	void list_insert_front();
+	void list_insert_back();
+	void list_insert_in();
+	void list_insert(string data);
+	void list_delete_last();			// usuwanie ostatniego rekordu
+	void list_delete_first();			// usuwanie pierwszego rekordu
+	void list_delete_in();		// usuwanie wskazanego rekordu
 	void load();				// wczytanie listy z pliku .txt
 	void save();
 	int ile();
@@ -50,7 +50,7 @@ list::list()
 	tail = 0;
 }
 
-void list::newRekordFront()
+void list::list_insert_front()
 {
 
 	rekord* nowy = new rekord;
@@ -73,7 +73,7 @@ void list::newRekordFront()
 		head = nowy;
 	}
 }
-void list::newRekordBack()
+void list::list_insert_back()
 {
 	rekord* nowy = new rekord;
 
@@ -97,7 +97,7 @@ void list::newRekordBack()
 	}
 }
 
-void list::newRekordIn()
+void list::list_insert_in()
 {
 
 	if (head == 0)
@@ -117,12 +117,12 @@ void list::newRekordIn()
 		cin >> wybor;
 		if (wybor == 0)
 		{
-			newRekordBack();
+			list_insert_back();
 		}
 		else if (wybor > 0)
 		{
 			if (wybor >= ile()){
-				newRekordFront();
+				list_insert_front();
 			}
 			else {
 				rekord* nowy = new rekord;
@@ -151,7 +151,7 @@ void list::newRekordIn()
 	}
 }
 
-void list::newRekord(string data)
+void list::list_insert(string data)
 {                                                      //tworzenie nowego elementu listy dla konkretnego podanego wczesniej keya
 
 	rekord* nowy = new rekord;
@@ -205,7 +205,7 @@ void list::displayBack()
 }
 
 void list::load()
-{													
+{
 	tail = 0;
 	head = 0;
 
@@ -218,7 +218,7 @@ void list::load()
 		string line;
 
 		while (getline(plik, line)) {
-			newRekord(line);
+			list_insert(line);
 		}
 
 	}
@@ -256,7 +256,7 @@ int list::ile()
 	rekord* temp = new rekord;
 	temp = tail;
 	int licznik = 0;
-	while (temp)
+	while (temp!=0)
 	{
 		temp = tail->next;
 		licznik++;
@@ -264,7 +264,7 @@ int list::ile()
 	return licznik;
 }
 
-void list::popLastRekord() {								// usuwanie ostatniego rekordu
+void list::list_delete_last() {								// usuwanie ostatniego rekordu
 	if (head == 0)
 		cout << "\n\n\t\t Lista jest pusta.\n\n";
 	else {
@@ -273,7 +273,7 @@ void list::popLastRekord() {								// usuwanie ostatniego rekordu
 	}
 }
 
-void list::popFirstRekord() {								// usuwanie pierwszego rekordu
+void list::list_delete_first() {								// usuwanie pierwszego rekordu
 	if (tail == 0)
 		cout << "\n\n\t\t Lista jest pusta.\n\n";
 	else {
@@ -282,20 +282,32 @@ void list::popFirstRekord() {								// usuwanie pierwszego rekordu
 	}
 }
 
-void list::popSelectedRekord() {							// usuwanie wybranego rekordu
+void list::list_delete_in() {							// usuwanie wybranego rekordu
 	int numer;
-	cout << "\n\n Podj numer elementu ktory chcesz usunac: ";
+	cout << "\n\n Podaj numer elementu ktory chcesz usunac: ";
 	cin >> numer;
-	while (numer<0 || numer>ile()) {
-		cout << "\nChyba czegos nie rozumiesz... Musisz podac liczbe z zakresu 0 - " << ile() << "\t sprobujmy jeszcze raz: ";
-		cin >> numer;
+	cout << "\n\nile() = " << ile() << " numer = " << numer << endl;
+	if(numer<=0){
+        cout<<"\nnumer<0\n";
+	}
+	else if(numer > 0 && numer < ile()){
+        cout<<"\n numer > 0 && numer < ile()\n";
+	}
+	else{
+        cout<<"\nnumer > ile()\n";
 	}
 
-	rekord* temp = new rekord;
-	temp = tail;
+                            /*while (numer<=0 || numer>ile())
+                                {
+                                cout << "\nChyba czegos nie rozumiesz... Musisz podac liczbe z zakresu 0 - " << ile() << "\t sprobujmy jeszcze raz: ";
+                                cin >> numer;
+                                }
 
-	cout << "\n\nTu bedzie sie dzialo usuwanie, ale jeszcze go nie ma\n\n";
+                            rekord* temp = new rekord;
+                            temp = tail;
 
+                            cout << "\n\nTu bedzie sie dzialo usuwanie, ale jeszcze go nie ma\n\n";
+                        */
 }
 
 int main()
@@ -311,14 +323,14 @@ int main()
 		cout << "   1. Dodaj element na poczatku listy.  " << endl;
 		cout << "   2. Dodaj element na koncu listy.  " << endl;
 		cout << "   3. Dodaj element w wybranym miejscu listy. " << endl;
-		cout << "   4. Usuń element z poczatku listy.  " << endl;
-		cout << "   5. Usuń element z konca listy.  " << endl;
-		cout << "   6. Usuń element z wybranego miejsca listy. " << endl;
+		cout << "   4. Usun element z poczatku listy.  " << endl;
+		cout << "   5. Usun element z konca listy.  " << endl;
+		cout << "   6. Usun element z wybranego miejsca listy. " << endl;
 		cout << "   7. Zapisz liste.  " << endl;
 		cout << "   8. Wczytaj zapisana liste.  " << endl;
 		cout << "   9. Wyswietl liste.  " << endl;
 		//cout << "   9. Wyświetl liste od konca.  " << endl;
-		cout << "   0. Wyjście  " << endl;
+		cout << "   0. Wyjscie  " << endl;
 		cout << "   ---------------------------------------------   " << endl;
 		cout << "   ----==== - Made by Agata Buksinska - ====----   " << endl;
 		cout << "\n   Wybierz numer polecenia :";
@@ -329,34 +341,36 @@ int main()
 		if (wybor == 49)    //1
 		{
 			system("cls");
-			my_list.newRekordBack();
+			my_list.list_insert_back();
 		}
 		else if (wybor == 50)   //2
 		{
 			system("cls");
-			my_list.newRekordFront();
+			my_list.list_insert_front();
 		}
 		else if (wybor == 51)    //3
 		{
 			system("cls");
-			my_list.newRekordIn();
+			my_list.list_insert_in();
 
 		}
 		else if (wybor == 52)   //4
 		{
-			my_list.popFirstRekord();
+			my_list.list_delete_first();
 			cout << "\n\n\t\t Usunieto pierwszy element :)\n\n";
+			system("pause");
 		}
 		else if (wybor == 53)   //5
 		{
-			my_list.popLastRekord();
+			my_list.list_delete_last();
 			cout << "\n\n\t\t Usunieto ostatni element :)\n\n";
+			system("pause");
 		}
 		else if (wybor == 54)   //6
 		{
-			my_list.popSelectedRekord();
+			my_list.list_delete_in();
 			cout << "\n\n\t\t Usunieto wybrany element :)\n\n";
-
+			system("pause");
 		}
 		else if (wybor == 55)   //7
 		{
@@ -381,6 +395,11 @@ int main()
 			system("pause");*/
 
 		}
+		else if (wybor == 105)  //i
+        {
+            cout << "\n\n Lista ma " << my_list.ile() << " elementow.";
+            system("pause");
+        }
 	} while (wybor != 48); //0
 
 	cout << endl << "Thanks, I hope you enjoyed :)" << endl << endl;
