@@ -1,4 +1,4 @@
-#include <string>
+﻿#include <string>
 #include <iostream>
 #include <windows.h>
 #include <conio.h>
@@ -59,14 +59,14 @@ void list::newRekordFront()
 	cin >> nowy->key;
 
 	if (head == 0)
-    {
-																						//string input;
-                                                                                        //getline(cin, input, '|');
+	{
+		//string input;
+		//getline(cin, input, '|');
 		head = nowy;                                                                    // = wkazuje a nie STAJE SIE
 		tail = nowy;
 	}
 	else
-        {
+	{
 		head->next = nowy;                                                              //head jest wskaznikiem listy na element
 		nowy->prev = head;
 		nowy->next = 0;
@@ -81,15 +81,15 @@ void list::newRekordBack()
 	cin >> nowy->key;
 
 	if (head == 0)
-    {
-																						//string input;
-                                                                                        //getline(cin, input, '|');
+	{
+		//string input;
+		//getline(cin, input, '|');
 		head = nowy;                                                                    // = wkazuje a nie STAJE SIE
 		tail = nowy;
 	}
 	else
 
-    {
+	{
 		tail->prev = nowy;                                                              //head jest wskaznikiem listy na element
 		nowy->next = tail;
 		nowy->prev = 0;
@@ -101,64 +101,65 @@ void list::newRekordIn()
 {
 
 	if (head == 0)
-    {
+	{
 		rekord* nowy = new rekord;
 
-        cout << "Prosze wpisac dane: ";
-        cin >> nowy->key;																				//string input;
-                                                                                        //getline(cin, input, '|');
+		cout << "Prosze wpisac dane: ";
+		cin >> nowy->key;																				//string input;
+																						//getline(cin, input, '|');
 		head = nowy;                                                                    // = wkazuje a nie STAJE SIE
 		tail = nowy;
 	}
 	else
-    {
-        int wybor;
-        cout << "Na ktorej pozycji chcesz wstawic element? ";
-        cin >> wybor;
-        if (wybor == 0)
-        {
-            newRekordBack();
-        }
-        else if (wybor>0&&wybor<ile())
-        {
-            rekord* nowy = new rekord;
+	{
+		int wybor;
+		cout << "Na ktorej pozycji chcesz wstawic element? ";
+		cin >> wybor;
+		if (wybor == 0)
+		{
+			newRekordBack();
+		}
+		else if (wybor > 0)
+		{
+			if (wybor >= ile()){
+				newRekordFront();
+			}
+			else {
+				rekord* nowy = new rekord;
 
-            cout << "Prosze wpisac dane: ";
-            cin >> nowy->key;
+				cout << "Prosze wpisac dane: ";
+				cin >> nowy->key;
 
-            nowy->next = tail;
+				nowy->next = tail;
 
-            for (int i = 0; i<ile(); i++)
-            {
-                nowy->next = nowy->next->next;
+				for (int i = 0; i < ile(); i++)
+				{
+					nowy->next = nowy->next->next;
 
-            }
+				}
 
-            nowy->prev = nowy->next->prev;
-            nowy->prev->next = nowy;
-            nowy->next->prev = nowy->prev;
-        }
-        else if (wybor == ile())
-        {
-            newRekordFront();
-        }
-        else
-        {
-            cout << "Musisz wybrać miejsce na liscie (0 - " << ile() << ")";
-        }
+				nowy->prev = nowy->next->prev;
+				nowy->prev->next = nowy;
+				nowy->next->prev = nowy->prev;
+			}
+		}
+		else
+		{
+			cout << "Musisz wybrać miejsce na liscie (0 - " << ile() << ")";
+		}
 
 	}
 }
 
 void list::newRekord(string data)
-{                                                      //tworzenie funkcji
+{                                                      //tworzenie nowego elementu listy dla konkretnego podanego wczesniej keya
 
 	rekord* nowy = new rekord;
 
 	nowy->key = data;
 
 	if (head == 0)
-    {
+	{
 		head = nowy;
 		tail = nowy;
 	}
@@ -176,7 +177,7 @@ void list::display()
 	if (head == 0)
 		cout << "\nERROR: Lista jest pusta. \nNie mam nic do wyswietlwnia\n";
 	else
-    {
+	{
 		rekord* temp = tail;
 		while (temp)
 		{
@@ -192,7 +193,7 @@ void list::displayBack()
 	if (head == 0)
 		cout << "\nERROR: Lista jest pusta. \nNie ma nic do wyswietlenia?\n";
 	else
-    {
+	{
 		rekord* temp = head;
 		while (temp)
 		{
@@ -204,15 +205,16 @@ void list::displayBack()
 }
 
 void list::load()
-{													// tworzymy obiekt do operowania na plikach
+{													
+	tail = 0;
+	head = 0;
 
-
-	fstream plik;
+	fstream plik;							// tworzymy obiekt do operowania na plikach
 
 	plik.open("dane_listy.txt", ios::in);                       // plik sam siê tworzy przy zapisie, tylko do odczytu dla progemu
 	if (plik.good() == true)
 	{
-	    cout << "\n\n loaded saved list :) \n\n";
+		cout << "\n\n loaded saved list :) \n\n";
 		string line;
 
 		while (getline(plik, line)) {
@@ -224,7 +226,7 @@ void list::load()
 		cout << "\nFailed to open dane_listy.txt file \n";               //wyœwietli sie kiedy plik tekstowy nie istnieje
 	}
 
-    plik.close();
+	plik.close();
 
 }
 
@@ -251,26 +253,48 @@ void list::save() {												       	// ZAPIS
 
 int list::ile()
 {
-    rekord* temp = new rekord;
-    temp = tail;
-    int licznik = 0;
-    while (temp)
-    {
-        temp=tail->next;
-        licznik++;
-    }
-    return licznik;
+	rekord* temp = new rekord;
+	temp = tail;
+	int licznik = 0;
+	while (temp)
+	{
+		temp = tail->next;
+		licznik++;
+	}
+	return licznik;
 }
 
 void list::popLastRekord() {								// usuwanie ostatniego rekordu
-
+	if (head == 0)
+		cout << "\n\n\t\t Lista jest pusta.\n\n";
+	else {
+		head->prev->next = 0;
+		head = head->prev;
+	}
 }
 
 void list::popFirstRekord() {								// usuwanie pierwszego rekordu
-
+	if (tail == 0)
+		cout << "\n\n\t\t Lista jest pusta.\n\n";
+	else {
+		tail->next->prev = 0;
+		tail = tail->next;
+	}
 }
 
 void list::popSelectedRekord() {							// usuwanie wybranego rekordu
+	int numer;
+	cout << "\n\n Podj numer elementu ktory chcesz usunac: ";
+	cin >> numer;
+	while (numer<0 || numer>ile()) {
+		cout << "\nChyba czegos nie rozumiesz... Musisz podac liczbe z zakresu 0 - " << ile() << "\t sprobujmy jeszcze raz: ";
+		cin >> numer;
+	}
+
+	rekord* temp = new rekord;
+	temp = tail;
+
+	cout << "\n\nTu bedzie sie dzialo usuwanie, ale jeszcze go nie ma\n\n";
 
 }
 
@@ -291,15 +315,16 @@ int main()
 		cout << "   5. Usuń element z konca listy.  " << endl;
 		cout << "   6. Usuń element z wybranego miejsca listy. " << endl;
 		cout << "   7. Zapisz liste.  " << endl;
-		cout << "   8. Wyswietl liste.  " << endl;
-		cout << "   9. Wyświetl liste od konca.  " << endl;
+		cout << "   8. Wczytaj zapisana liste.  " << endl;
+		cout << "   9. Wyswietl liste.  " << endl;
+		//cout << "   9. Wyświetl liste od konca.  " << endl;
 		cout << "   0. Wyjście  " << endl;
 		cout << "   ---------------------------------------------   " << endl;
-        cout << "   ----==== - Made by Agata Buksinska - ====----   " << endl;
+		cout << "   ----==== - Made by Agata Buksinska - ====----   " << endl;
 		cout << "\n   Wybierz numer polecenia :";
 
 		wybor = _getch();                                                     //jak cin ale bez potwierdzenia,
-                                                                              //cyferki maj¹ odpowiedzni kod z tablicy ASCII
+																			  //cyferki maj¹ odpowiedzni kod z tablicy ASCII
 
 		if (wybor == 49)    //1
 		{
@@ -308,12 +333,12 @@ int main()
 		}
 		else if (wybor == 50)   //2
 		{
-		    system("cls");
+			system("cls");
 			my_list.newRekordFront();
 		}
 		else if (wybor == 51)    //3
 		{
-		    system("cls");
+			system("cls");
 			my_list.newRekordIn();
 
 		}
@@ -326,37 +351,39 @@ int main()
 		{
 			my_list.popLastRekord();
 			cout << "\n\n\t\t Usunieto ostatni element :)\n\n";
-
-
-        }
+		}
 		else if (wybor == 54)   //6
 		{
 			my_list.popSelectedRekord();
-			//cout << "\n\n\t\t Usunieto pierwszy element :)\n\n";
+			cout << "\n\n\t\t Usunieto wybrany element :)\n\n";
 
 		}
 		else if (wybor == 55)   //7
 		{
-            cout << "\n\n Twoja lista zosta³a zapisana jako dane_listy.txt \n\n";
+			cout << "\n\n Twoja lista zosta³a zapisana jako dane_listy.txt \n\n";
 			my_list.save();
 			system("pause");
 		}
 		else if (wybor == 56)   //8
 		{
-            system("cls");
+			cout << "\n\n Twoja lista zostala pomyslnie wczytana z dane_listy.txt \n\n";
+			my_list.load();
+			system("pause");
+		}
+		else if (wybor == 57)   //9
+		{
+			system("cls");
 			my_list.display();
 			system("pause");
-		}
-		else if (wybor == 54)   //9
-		{
-            system("cls");
+
+			/*system("cls");
 			my_list.displayBack();
-			system("pause");
+			system("pause");*/
 
 		}
-		}while (wybor != 48); //0
+	} while (wybor != 48); //0
 
-        cout << endl << "Thanks, I hope you enjoyed :)" << endl << endl;
+	cout << endl << "Thanks, I hope you enjoyed :)" << endl << endl;
 
 	system("pause");
 	return 0;
