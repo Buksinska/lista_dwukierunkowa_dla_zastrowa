@@ -121,7 +121,7 @@ void list::list_insert_in()
 		}
 		else if (wybor > 0)
 		{
-			if (wybor >= ile()){
+			if (wybor >= ile()) {
 				list_insert_front();
 			}
 			else {
@@ -253,14 +253,16 @@ void list::save() {												       	// ZAPIS
 
 int list::ile()
 {
-	rekord* temp = new rekord;
-	temp = tail;
+	rekord* temp = tail;
 	int licznik = 0;
-	while (temp!=0)
+	for (temp = tail; temp; temp = temp->next) {
+		licznik++;
+	}
+	/*while (temp)
 	{
 		temp = tail->next;
 		licznik++;
-	}
+	}*/
 	return licznik;
 }
 
@@ -284,30 +286,43 @@ void list::list_delete_first() {								// usuwanie pierwszego rekordu
 
 void list::list_delete_in() {							// usuwanie wybranego rekordu
 	int numer;
-	cout << "\n\n Podaj numer elementu ktory chcesz usunac: ";
+	cout << "\n\n Podaj numer elementu ktory chcesz usunac (liczymy 0, 1, 2...): ";
 	cin >> numer;
-	cout << "\n\nile() = " << ile() << " numer = " << numer << endl;
-	if(numer<=0){
-        cout<<"\nnumer<0\n";
+
+	if (numer <= 0) {
+		cout << "\nnumer<0\n";
+		tail = tail->next;
+		tail->prev = 0;
 	}
-	else if(numer > 0 && numer < ile()){
-        cout<<"\n numer > 0 && numer < ile()\n";
+	else if (numer > 0 && numer < ile()) {
+		cout << "\n numer > 0 && numer < ile()\n";
+		rekord* temp = tail;
+		int licznik = 0;
+		do {
+			temp = temp->next;
+			licznik++;
+		} while (licznik != numer);
+		temp->prev->next = temp->next;
+		temp->next->prev = temp->prev;
+		delete temp;
 	}
-	else{
-        cout<<"\nnumer > ile()\n";
+	else {
+		cout << "\npodales numer wiekszy lub rowny \n";
+		head = head->prev;
+		head->next = 0;
 	}
 
-                            /*while (numer<=0 || numer>ile())
-                                {
-                                cout << "\nChyba czegos nie rozumiesz... Musisz podac liczbe z zakresu 0 - " << ile() << "\t sprobujmy jeszcze raz: ";
-                                cin >> numer;
-                                }
+	/*while (numer<=0 || numer>ile())
+		{
+		cout << "\nChyba czegos nie rozumiesz... Musisz podac liczbe z zakresu 0 - " << ile() << "\t sprobujmy jeszcze raz: ";
+		cin >> numer;
+		}
 
-                            rekord* temp = new rekord;
-                            temp = tail;
+	rekord* temp = new rekord;
+	temp = tail;
 
-                            cout << "\n\nTu bedzie sie dzialo usuwanie, ale jeszcze go nie ma\n\n";
-                        */
+	cout << "\n\nTu bedzie sie dzialo usuwanie, ale jeszcze go nie ma\n\n";
+*/
 }
 
 int main()
@@ -396,10 +411,10 @@ int main()
 
 		}
 		else if (wybor == 105)  //i
-        {
-            cout << "\n\n Lista ma " << my_list.ile() << " elementow.";
-            system("pause");
-        }
+		{
+			cout << "\n\n Lista ma " << my_list.ile() << " elementow.";
+			system("pause");
+		}
 	} while (wybor != 48); //0
 
 	cout << endl << "Thanks, I hope you enjoyed :)" << endl << endl;
